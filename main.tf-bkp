@@ -1,0 +1,84 @@
+terraform {
+  required_providers {
+    aws = {
+      source = "hashicorp/aws"
+      version = "6.20.0"
+    }
+  }
+}
+
+provider "aws" {
+  # Configuration options
+}
+
+resource "aws_vpc" "minha-vpc" {
+  cidr_block = "10.0.0.0/16"
+  tags = {
+    Name = "vpc-terraform"
+  }
+}
+
+## Cria a subnet publica na AZ A
+resource "aws_subnet" "public_subnet_1a" {
+  vpc_id = aws_vpc.minha-vpc.id
+  cidr_block = "10.0.1.0/24"
+  availability_zone = "us-east-1a"
+
+  tags = {
+    Name = "public-subnet-1a"
+  }
+}
+
+## Cria a subnet privada na AZ A
+resource "aws_subnet" "private_subnet_1a" {
+  vpc_id = aws_vpc.minha-vpc.id
+  cidr_block = "10.0.10.0/24"
+  availability_zone = "us-east-1a"
+
+  tags = {
+    Name = "private-subnet-1a"
+  }
+}
+
+## Cria a subnet publica na AZ B
+resource "aws_subnet" "public_subnet_1b" {
+  vpc_id = aws_vpc.minha-vpc.id
+  cidr_block = "10.0.2.0/24"
+  availability_zone = "us-east-1b"
+
+  tags = {
+    Name = "public-subnet-1b"
+  }
+}
+
+## Cria a subnet privada na AZ B
+resource "aws_subnet" "private_subnet_1b" {
+  vpc_id = aws_vpc.minha-vpc.id
+  cidr_block = "10.0.20.0/24"
+  availability_zone = "us-east-1b"
+
+  tags = {
+    Name = "private-subnet-1b"
+  }
+}
+
+output "vpc_id" {
+    value = aws_vpc.minha-vpc.id
+}
+
+output "subnet_publica_1a" {
+    value = aws_subnet.public_subnet_1a.id
+}
+
+output "subnet_privada_1a" {
+    value = aws_subnet.private_subnet_1a.id
+}
+
+output "subnet_publica_1b" {
+    value = aws_subnet.public_subnet_1b.id
+}
+
+output "subnet_privada_1b" {
+    value = aws_subnet.private_subnet_1b.id
+}
+
